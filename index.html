@@ -1,199 +1,103 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Emperor’s Spring</title>
-  <style>
-    html, body {
-      margin: 0; padding: 0; overflow: hidden;
-      background: linear-gradient(to bottom, #fefcea, #f1daff);
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      color: #333;
-    }
-    h1 {
-      margin-top: 20vh;
-      font-size: 2.5em;
-      color: #5e3b8c;
-      font-weight: normal;
-      font-style: italic;
-    }
-    p {
-      font-size: 1.8em;
-      color: #7d3c98;
-      font-style: italic;
-    }
-    #cursor-follower {
-      position: fixed;
-      width: 30px;               /* büyüttüm */
-      height: 30px;              /* büyüttüm */
-      background-color: rgba(99, 57, 116, 0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: pulse 2s ease-in-out infinite; /* nefes animasyonu */
-      z-index: 50;
-    }
-    @keyframes pulse {
-      0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.5;
-      }
-      50% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 0.8;
-      }
-    }
-    .sakura {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cherry_blossom_icon.svg/32px-Cherry_blossom_icon.svg.png');
-      background-size: cover;
-      opacity: 0.8;
-      pointer-events: none;
-      animation: fall linear infinite;
-      z-index: 10;
-    }
-    @keyframes fall {
-      0% {
-        transform: translateY(-10%) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    #volume-control {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 100;
-      background: rgba(99, 57, 116, 0.8);
-      border-radius: 5px;
-      padding: 5px 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: white;
-      user-select: none;
-      font-size: 14px;
-      box-shadow: 0 0 10px rgba(99,57,116,0.7);
-    }
-    #volume-control input[type=range] {
-      -webkit-appearance: none;
-      width: 100px;
-      height: 5px;
-      background: #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #volume-control input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 15px;
-      height: 15px;
-      background: #633974;
-      border-radius: 50%;
-      cursor: pointer;
-      border: none;
-      margin-top: -5px;
-      transition: background 0.3s ease;
-    }
-    #volume-control input[type=range]:hover::-webkit-slider-thumb {
-      background: #9b59b6;
-    }
-    #volume-control svg {
-      width: 20px;
-      height: 20px;
-      fill: white;
-    }
-    #play-music {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      background-color: rgba(99, 57, 116, 0.8);
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 1.2em;
-      border-radius: 5px;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 0 10px rgba(99,57,116,0.7);
-      transition: background-color 0.3s ease;
-    }
-    #play-music:hover {
-      background-color: rgba(155, 89, 182, 0.9);
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neither Fish Nor Cat Clone</title>
+<style>
+  /* Genel stiller */
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    overflow-x: hidden;
+    color: #333;
+  }
+  header {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+  }
+  header h1 {
+    font-weight: 900;
+    font-size: 4rem;
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    user-select: none;
+  }
+  header p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin-top: 1rem;
+  }
+  main {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  main section {
+    margin-bottom: 40px;
+  }
+  main section h2 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  main section p {
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+  /* Hover efekti ile tıklanabilirlik */
+  a {
+    color: #333;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  a:hover {
+    border-color: #fcb69f;
+  }
+</style>
 </head>
 <body>
-  <div id="cursor-follower"></div>
 
-  <h1>𝑊𝑖𝑡ℎ𝑜𝑢𝑡 𝑡ℎ𝑒 𝑐𝑜𝑢𝑟𝑎𝑔𝑒 𝑡𝑜 𝑟𝑖𝑠𝑘 𝑎𝑙𝑙, 𝑜𝑛𝑒 𝑔𝑎𝑖𝑛𝑠 𝑛𝑜𝑡ℎ𝑖𝑛𝑔 𝑤𝑜𝑟𝑡ℎ ℎ𝑎𝑣𝑖𝑛𝑔.</h1>
-  <p>ℐ 𝒶𝓂 ℴ𝓃𝓁𝓎... 𝒶𝓃 ℰ𝓂𝓅ℯ𝓇ℴ𝓇.</p>
+<header>
+  <h1>Neither Fish Nor Cat</h1>
+  <p>A clean, modern, and minimalist website clone sample.</p>
+</header>
 
-  <button id="play-music" aria-label="Müziği başlat">🎵 Müziği Başlat</button>
+<main>
+  <section>
+    <h2>About Us</h2>
+    <p>This section gives a brief introduction about the project or company, styled simply and cleanly.</p>
+  </section>
+  <section>
+    <h2>Services</h2>
+    <p>Details about the services offered, laid out in a minimalistic manner for clarity.</p>
+  </section>
+  <section>
+    <h2>Contact</h2>
+    <p>How to get in touch, with clean text and subtle styling.</p>
+  </section>
+</main>
 
-  <div id="volume-control" title="Ses seviyesi">
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M3 10v4h4l5 5V5L7 10H3z"></path>
-    </svg>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Ses seviyesi kontrolü"/>
-  </div>
+<footer>
+  &copy; 2025 Neither Fish Nor Cat. All rights reserved.
+</footer>
 
-  <audio id="bg-music" src="https://drive.google.com/uc?export=download&id=1pbCQB-h2oMAvIxy3ghA5OnY-2YgQE8Jn" loop></audio>
-
-  <script>
-    // Fare takipçisi
-    const follower = document.getElementById('cursor-follower');
-    document.addEventListener('mousemove', e => {
-      follower.style.left = e.pageX + 'px';
-      follower.style.top = e.pageY + 'px';
-    });
-
-    // Sakura çiçekleri düşüyor
-    function createSakura() {
-      const sakura = document.createElement('div');
-      sakura.classList.add('sakura');
-      sakura.style.left = Math.random() * window.innerWidth + 'px';
-      sakura.style.animationDuration = (5 + Math.random() * 5) + 's';
-      document.body.appendChild(sakura);
-      setTimeout(() => sakura.remove(), 10000);
-    }
-    setInterval(createSakura, 300);
-
-    // Müzik kontrolleri
-    const music = document.getElementById('bg-music');
-    const playBtn = document.getElementById('play-music');
-    const volumeSlider = document.getElementById('volume-slider');
-
-    // Müzik otomatik başlatmaya çalış
-    window.addEventListener('load', () => {
-      music.volume = volumeSlider.value;
-      const playPromise = music.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Eğer otomatik çalamazsa butonu göster
-          playBtn.style.display = 'block';
-        });
-      }
-    });
-
-    // Buton tıklanınca müziği başlat
-    playBtn.addEventListener('click', () => {
-      music.play();
-      playBtn.style.display = 'none';
-    });
-
-    // Ses sliderı ile sesi ayarla
-    volumeSlider.addEventListener('input', () => {
-      music.volume = volumeSlider.value;
-    });
-  </script>
 </body>
 </html>
