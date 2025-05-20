@@ -26,22 +26,34 @@
     }
     #cursor-follower {
       position: fixed;
-      width: 15px;
-      height: 15px;
+      width: 30px;               /* büyüttüm */
+      height: 30px;              /* büyüttüm */
       background-color: rgba(99, 57, 116, 0.5);
       border-radius: 50%;
       pointer-events: none;
       transform: translate(-50%, -50%);
-      transition: transform 0.05s linear;
+      animation: pulse 2s ease-in-out infinite; /* nefes animasyonu */
       z-index: 50;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.8;
+      }
     }
     .sakura {
       position: fixed;
+      width: 20px;
+      height: 20px;
       background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cherry_blossom_icon.svg/32px-Cherry_blossom_icon.svg.png');
       background-size: cover;
       opacity: 0.8;
       pointer-events: none;
-      animation: fall linear forwards;
+      animation: fall linear infinite;
       z-index: 10;
     }
     @keyframes fall {
@@ -53,26 +65,6 @@
         transform: translateY(110vh) rotate(360deg);
         opacity: 0;
       }
-    }
-    #music-button {
-      position: fixed;
-      bottom: 100px;
-      right: 10px;
-      z-index: 100;
-      background-color: rgba(99, 57, 116, 0.8);
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 1em;
-      border-radius: 5px;
-      cursor: pointer;
-      display: none;
-      user-select: none;
-      box-shadow: 0 0 10px rgba(99,57,116,0.7);
-      transition: background-color 0.3s ease;
-    }
-    #music-button:hover {
-      background-color: rgba(155, 89, 182, 0.9);
     }
     #volume-control {
       position: fixed;
@@ -118,6 +110,25 @@
       height: 20px;
       fill: white;
     }
+    #play-music {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background-color: rgba(99, 57, 116, 0.8);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 0 10px rgba(99,57,116,0.7);
+      transition: background-color 0.3s ease;
+    }
+    #play-music:hover {
+      background-color: rgba(155, 89, 182, 0.9);
+    }
   </style>
 </head>
 <body>
@@ -126,10 +137,8 @@
   <h1>𝑊𝑖𝑡ℎ𝑜𝑢𝑡 𝑡ℎ𝑒 𝑐𝑜𝑢𝑟𝑎𝑔𝑒 𝑡𝑜 𝑟𝑖𝑠𝑘 𝑎𝑙𝑙, 𝑜𝑛𝑒 𝑔𝑎𝑖𝑛𝑠 𝑛𝑜𝑡ℎ𝑖𝑛𝑔 𝑤𝑜𝑟𝑡ℎ ℎ𝑎𝑣𝑖𝑛𝑔.</h1>
   <p>ℐ 𝒶𝓂 ℴ𝓃𝓁𝓎... 𝒶𝓃 ℰ𝓂𝓅ℯ𝓇ℴ𝓇.</p>
 
-  <!-- Müzik Başlat Butonu -->
-  <button id="music-button" aria-label="Müziği başlat">🎵 Müziği Başlat</button>
+  <button id="play-music" aria-label="Müziği başlat">🎵 Müziği Başlat</button>
 
-  <!-- Ses Kontrol -->
   <div id="volume-control" title="Ses seviyesi">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M3 10v4h4l5 5V5L7 10H3z"></path>
@@ -137,39 +146,31 @@
     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Ses seviyesi kontrolü"/>
   </div>
 
-  <!-- Müzik dosyası Google Drive’dan -->
   <audio id="bg-music" src="https://drive.google.com/uc?export=download&id=1pbCQB-h2oMAvIxy3ghA5OnY-2YgQE8Jn" loop></audio>
 
   <script>
+    // Fare takipçisi
     const follower = document.getElementById('cursor-follower');
-    const music = document.getElementById('bg-music');
-    const musicButton = document.getElementById('music-button');
-    const volumeSlider = document.getElementById('volume-slider');
-
-    // Fare takip
     document.addEventListener('mousemove', e => {
       follower.style.left = e.pageX + 'px';
       follower.style.top = e.pageY + 'px';
     });
 
-    // Sakura efekti
+    // Sakura çiçekleri düşüyor
     function createSakura() {
       const sakura = document.createElement('div');
       sakura.classList.add('sakura');
       sakura.style.left = Math.random() * window.innerWidth + 'px';
-
-      // Boyut rastgele 10-30 px arası
-      const size = 10 + Math.random() * 20;
-      sakura.style.width = size + 'px';
-      sakura.style.height = size + 'px';
-
-      // Animasyon süresi 5-10 saniye arası
       sakura.style.animationDuration = (5 + Math.random() * 5) + 's';
-
       document.body.appendChild(sakura);
-      setTimeout(() => { sakura.remove(); }, 10000);
+      setTimeout(() => sakura.remove(), 10000);
     }
     setInterval(createSakura, 300);
+
+    // Müzik kontrolleri
+    const music = document.getElementById('bg-music');
+    const playBtn = document.getElementById('play-music');
+    const volumeSlider = document.getElementById('volume-slider');
 
     // Müzik otomatik başlatmaya çalış
     window.addEventListener('load', () => {
@@ -177,16 +178,16 @@
       const playPromise = music.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Otomatik çalamazsa butonu göster
-          musicButton.style.display = 'block';
+          // Eğer otomatik çalamazsa butonu göster
+          playBtn.style.display = 'block';
         });
       }
     });
 
-    // Butona tıklanınca müzik başlat
-    musicButton.addEventListener('click', () => {
+    // Buton tıklanınca müziği başlat
+    playBtn.addEventListener('click', () => {
       music.play();
-      musicButton.style.display = 'none';
+      playBtn.style.display = 'none';
     });
 
     // Ses sliderı ile sesi ayarla
