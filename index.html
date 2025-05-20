@@ -33,16 +33,16 @@
       pointer-events: none;
       transform: translate(-50%, -50%);
       transition: transform 0.05s linear;
+      z-index: 50;
     }
     .sakura {
       position: fixed;
-      width: 20px;
-      height: 20px;
       background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cherry_blossom_icon.svg/32px-Cherry_blossom_icon.svg.png');
       background-size: cover;
       opacity: 0.8;
       pointer-events: none;
-      animation: fall linear infinite;
+      animation: fall linear forwards;
+      z-index: 10;
     }
     @keyframes fall {
       0% {
@@ -58,8 +58,8 @@
       position: fixed;
       bottom: 100px;
       right: 10px;
-      z-index: 20;
-      background-color: rgba(99, 57, 116, 0.7);
+      z-index: 100;
+      background-color: rgba(99, 57, 116, 0.8);
       color: white;
       border: none;
       padding: 10px 15px;
@@ -67,12 +67,18 @@
       border-radius: 5px;
       cursor: pointer;
       display: none;
+      user-select: none;
+      box-shadow: 0 0 10px rgba(99,57,116,0.7);
+      transition: background-color 0.3s ease;
+    }
+    #music-button:hover {
+      background-color: rgba(155, 89, 182, 0.9);
     }
     #volume-control {
       position: fixed;
       top: 10px;
       left: 10px;
-      z-index: 30;
+      z-index: 100;
       background: rgba(99, 57, 116, 0.8);
       border-radius: 5px;
       padding: 5px 10px;
@@ -82,6 +88,7 @@
       color: white;
       user-select: none;
       font-size: 14px;
+      box-shadow: 0 0 10px rgba(99,57,116,0.7);
     }
     #volume-control input[type=range] {
       -webkit-appearance: none;
@@ -120,22 +127,18 @@
   <p>ℐ 𝒶𝓂 ℴ𝓃𝓁𝓎... 𝒶𝓃 ℰ𝓂𝓅ℯ𝓇ℴ𝓇.</p>
 
   <!-- Müzik Başlat Butonu -->
-  <button id="music-button">🎵 Müziği Başlat</button>
-
-  <!-- Spotify Embed -->
-  <div style="position: fixed; bottom: 10px; right: 10px; z-index: 10;">
-    <iframe src="https://open.spotify.com/embed/track/6IZvVAP7VPPnsGX6bvgkqg" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-  </div>
+  <button id="music-button" aria-label="Müziği başlat">🎵 Müziği Başlat</button>
 
   <!-- Ses Kontrol -->
   <div id="volume-control" title="Ses seviyesi">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M3 10v4h4l5 5V5L7 10H3z"></path>
     </svg>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" />
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Ses seviyesi kontrolü"/>
   </div>
 
-  <audio id="bg-music" src="https://dl.dropboxusercontent.com/s/hc0srn24z9gla28rka1su/PRIDE.-KendrickLamar.mp3" loop></audio>
+  <!-- Müzik dosyası Google Drive’dan -->
+  <audio id="bg-music" src="https://drive.google.com/uc?export=download&id=1pbCQB-h2oMAvIxy3ghA5OnY-2YgQE8Jn" loop></audio>
 
   <script>
     const follower = document.getElementById('cursor-follower');
@@ -154,30 +157,39 @@
       const sakura = document.createElement('div');
       sakura.classList.add('sakura');
       sakura.style.left = Math.random() * window.innerWidth + 'px';
+
+      // Boyut rastgele 10-30 px arası
+      const size = 10 + Math.random() * 20;
+      sakura.style.width = size + 'px';
+      sakura.style.height = size + 'px';
+
+      // Animasyon süresi 5-10 saniye arası
       sakura.style.animationDuration = (5 + Math.random() * 5) + 's';
+
       document.body.appendChild(sakura);
       setTimeout(() => { sakura.remove(); }, 10000);
     }
     setInterval(createSakura, 300);
 
-    // Otomatik müzik başlatmaya çalış
+    // Müzik otomatik başlatmaya çalış
     window.addEventListener('load', () => {
       music.volume = volumeSlider.value;
       const playPromise = music.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
+          // Otomatik çalamazsa butonu göster
           musicButton.style.display = 'block';
         });
       }
     });
 
-    // Butona tıklayınca müzik başlat
+    // Butona tıklanınca müzik başlat
     musicButton.addEventListener('click', () => {
       music.play();
       musicButton.style.display = 'none';
     });
 
-    // Ses sliderı ile ses ayarla
+    // Ses sliderı ile sesi ayarla
     volumeSlider.addEventListener('input', () => {
       music.volume = volumeSlider.value;
     });
